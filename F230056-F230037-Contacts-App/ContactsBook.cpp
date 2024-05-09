@@ -279,7 +279,7 @@ void ContactsBook::load_from_file(std::string file_name)
 
 void ContactsBook::save_to_file(std::string file_name)
 {
-	std::ofstream file(file_name);
+	std::ofstream file(file_name, std::ios::out);
 	if (!file.is_open())
 	{
 		return;

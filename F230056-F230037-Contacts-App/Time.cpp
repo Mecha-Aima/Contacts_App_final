@@ -9,9 +9,9 @@ Time::Time(const Time& other)
     this->minutes = other.minutes;
     this->seconds = other.seconds;
 }
-Time& Time::get_time() {
-    return *this;
-}
+//Time& Time::get_time() {
+//    return *this;
+//}
 void Time::set_time(int hours, int minutes, int seconds) {
     this->hours = hours;
     this->minutes = minutes;
