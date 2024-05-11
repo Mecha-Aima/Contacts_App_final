@@ -66,7 +66,10 @@ void SearchHistory::add_search_item(HistoryObject& historyObject) {
 List<HistoryObject> SearchHistory::get_search_history() {
     // reverse search history to show latest first
     List<HistoryObject> temp = history;
-    sort_list(temp, &temp[0], HistoryObject::greater_than); // Sort in descending order
+    // If history is empty, indexing will not work, so we create a new objetc
+    HistoryObject h;
+    sort_list(temp, &h, HistoryObject::greater_than); 
+    // Return a sorted version of the list
     return temp;
 }
 

@@ -145,11 +145,6 @@ namespace ContactsApp {
 		System::Void search_panel_Click(System::Object^ sender, System::EventArgs^ e)
 		{
 			Panel^ clicked = dynamic_cast<Panel^>(sender);
-			if (clicked == nullptr)
-			{
-				MessageBox::Show("clicked panel is null");
-				return;
-			}
 			String^ id_str = clicked->Controls["id_label"]->Text;
 			if (!String::IsNullOrEmpty(id_str))
 			{
