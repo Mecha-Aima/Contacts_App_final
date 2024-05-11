@@ -17,6 +17,7 @@ namespace ContactsApp {
 	public:
 		History(void)
 		{
+			historyPanel = gcnew Panel();
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -42,6 +43,7 @@ namespace ContactsApp {
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container^ components;
+		Panel^ historyPanel;
 	private: System::Windows::Forms::PictureBox^ back;
 	private: System::Windows::Forms::Label^ heading;
 
@@ -100,12 +102,18 @@ namespace ContactsApp {
 		   }
 #pragma endregion
 	private: System::Void History_Load(System::Object^ sender, System::EventArgs^ e) {
-
 		display_history();
 	}
 
 		   System::Void display_history()
 		   {
+			   historyPanel->Controls->Clear();
+			   historyPanel->Size = System::Drawing::Size(658, 1000);
+			   int total_h = 0;
+			   historyPanel->BackColor = Color::Transparent;
+			   historyPanel->Location = System::Drawing::Point(17, 60);
+			   historyPanel->Margin = System::Windows::Forms::Padding(0, 0, 0, 0);
+			   this->Controls->Add(historyPanel);
 			   List<HistoryObject> history = sh->get_search_history();
 			   for (int i = 0; i < history.size(); ++i)
 			   {
@@ -114,7 +122,6 @@ namespace ContactsApp {
 				   contactPanel->BackColor = System::Drawing::Color::White;
 				   contactPanel->Location = System::Drawing::Point(17, 130 + i * 120); // Adjust the Y position based on the index
 				   contactPanel->Size = System::Drawing::Size(658, 104);
-				   this->Controls->Add(contactPanel); // Add the panel to the form
 
 				   // Create and configure PictureBox
 				   PictureBox^ pictureBox = gcnew PictureBox();
@@ -151,7 +158,10 @@ namespace ContactsApp {
 				   DateLabel->Location = System::Drawing::Point(99, 70);
 				   DateLabel->Text = gcnew String((to_string(history[i].get_date().get_year()) + "/" + to_string(history[i].get_date().get_month()) + "/" + to_string(history[i].get_date().get_day())).c_str()); // Assuming get_mobile_number() returns a string
 				   contactPanel->Controls->Add(DateLabel); // Add Label to the panel
+				   historyPanel->Controls->Add(contactPanel);
 			   }
+			   historyPanel->AutoSize = true;
+			   historyPanel->AutoScroll = true;
 		   }
 
 

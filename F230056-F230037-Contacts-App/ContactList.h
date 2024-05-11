@@ -32,6 +32,7 @@ namespace ContactsApp {
 		Create_contact^ cc;
 		Contact_details^ cd;
 		Panel^ mainContainer;
+		Panel^ searchContainer;
 		bool search_closed = false;
 	private: System::Windows::Forms::PictureBox^ back;
 		   
@@ -71,14 +72,17 @@ namespace ContactsApp {
 
 
 	public: System::Windows::Forms::Panel^ search_bar;
-	public:
-	private:
-		
 
 	public:
 
 		void display_results(List<Contact> results)
 		{
+			searchContainer->Controls->Clear();
+			searchContainer->Size = System::Drawing::Size(658, 1000);
+			searchContainer->BackColor = Color::Transparent;
+			searchContainer->Location = System::Drawing::Point(17, 60);
+			searchContainer->Margin = System::Windows::Forms::Padding(0, 0, 0, 0);
+			this->Controls->Add(searchContainer);
 			heading->Text = "Search Results";
 			mainContainer->Hide();
 			mainContainer->Enabled = false;
@@ -87,10 +91,9 @@ namespace ContactsApp {
 				// Create a new Panel control for each contact
 				Panel^ c_panel = gcnew Panel();
 				c_panel->BackColor = System::Drawing::Color::White;
-				c_panel->Location = System::Drawing::Point(17, 150 + i * 120); // Adjust the Y position based on the index
+				c_panel->Location = System::Drawing::Point(17, 90 + i * 120); // Adjust the Y position based on the index
 				c_panel->Size = System::Drawing::Size(658, 104);
-				this->Controls->Add(c_panel); // Add the panel to the form
-				c_panel->Name = "c_panel" + i.ToString();
+				searchContainer->Controls->Add(c_panel);
 
 				// Create and configure PictureBox
 				PictureBox^ pictureBox = gcnew PictureBox();
@@ -103,7 +106,7 @@ namespace ContactsApp {
 				// Create and configure Label for full name
 				Label^ fullNameLabel = gcnew Label();
 				fullNameLabel->AutoSize = true;
-				fullNameLabel->Font = gcnew System::Drawing::Font(L"Arial", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				fullNameLabel->Font = gcnew System::Drawing::Font(L"Montserrat", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0));
 				fullNameLabel->ForeColor = System::Drawing::Color::MidnightBlue;
 				fullNameLabel->Location = System::Drawing::Point(99, 22);
@@ -130,7 +133,7 @@ namespace ContactsApp {
 				// Create and configure Label for phone number
 				Label^ phoneNumberLabel = gcnew Label();
 				phoneNumberLabel->AutoSize = true;
-				phoneNumberLabel->Font = gcnew System::Drawing::Font(L"Arial", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				phoneNumberLabel->Font = gcnew System::Drawing::Font(L"Montserrat", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0));
 				phoneNumberLabel->Location = System::Drawing::Point(99, 62);
 				phoneNumberLabel->Text = gcnew String(results[i].get_mobile_number().c_str()); 
@@ -139,13 +142,26 @@ namespace ContactsApp {
 				// Add panel to searchContainer
 				c_panel->Click += gcnew System::EventHandler(this, &ContactList::search_panel_Click);
 			}
+			searchContainer->AutoScroll = true;
+			searchContainer->AutoSize = true;
 
 		}
 
 		System::Void search_panel_Click(System::Object^ sender, System::EventArgs^ e)
 		{
-			Panel^ clicked = dynamic_cast<Panel^>(sender);
-			String^ id_str = clicked->Controls["id_label"]->Text;
+				Panel^ clicked = dynamic_cast<Panel^>(sender);
+				if (clicked == nullptr)
+				{
+					MessageBox::Show("clicked panel is null");
+					return;
+				}
+				Label^ idLabel = dynamic_cast<Label^>(clicked->Controls["id_label"]);
+				if (idLabel == nullptr)
+				{
+					MessageBox::Show("id label is null");
+					return;
+				}
+				String^ id_str = idLabel->Text;
 			if (!String::IsNullOrEmpty(id_str))
 			{
 				int id;
@@ -194,8 +210,6 @@ namespace ContactsApp {
 				contactPanel->BackColor = System::Drawing::Color::White;
 				contactPanel->Location = System::Drawing::Point(17, 90 + i * 120); // Adjust the Y position based on the index
 				contactPanel->Size = System::Drawing::Size(658, 104);
-				total_h += 104 + 76;
-				this->Controls->Add(contactPanel); // Add the panel to the form
 
 				// Create and configure PictureBox
 				PictureBox^ pictureBox = gcnew PictureBox();
@@ -208,7 +222,7 @@ namespace ContactsApp {
 				// Create and configure Label for full name
 				Label^ fullNameLabel = gcnew Label();
 				fullNameLabel->AutoSize = true;
-				fullNameLabel->Font = gcnew System::Drawing::Font(L"Arial", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				fullNameLabel->Font = gcnew System::Drawing::Font(L"Montserrat", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0));
 				fullNameLabel->ForeColor = System::Drawing::Color::MidnightBlue;
 				fullNameLabel->Location = System::Drawing::Point(99, 22);
@@ -218,7 +232,7 @@ namespace ContactsApp {
 				// Create and configure Label for phone number
 				Label^ phoneNumberLabel = gcnew Label();
 				phoneNumberLabel->AutoSize = true;
-				phoneNumberLabel->Font = gcnew System::Drawing::Font(L"Arial", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				phoneNumberLabel->Font = gcnew System::Drawing::Font(L"Montserrat", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0));
 				phoneNumberLabel->Location = System::Drawing::Point(99, 62);
 				phoneNumberLabel->Text = gcnew String(book->get_contact(i).get_mobile_number().c_str()); // Assuming get_mobile_number() returns a string
@@ -229,7 +243,8 @@ namespace ContactsApp {
 				// Add panel to mainContainer
 				mainContainer->Controls->Add(contactPanel);
 			}
-			mainContainer->Height = total_h;
+			mainContainer->AutoScroll = true;
+			mainContainer->AutoSize = true;
 			
 		}
 
@@ -385,6 +400,8 @@ namespace ContactsApp {
 		book->save_to_file("write_contacts.txt");	// In case we want to write to a different file
 		this->Focus();
 		mainContainer = gcnew Panel();
+		searchContainer = gcnew Panel();
+		searchContainer->Name = "search_container";
 		DisplayContacts();
 		cc = gcnew Create_contact(*book);
 		search_field->Enabled = false;
@@ -421,13 +438,7 @@ private: System::Void search_field_KeyPress(System::Object^ sender, System::Wind
 	}
 }
 private: System::Void close_Click(System::Object^ sender, System::EventArgs^ e) {
-	for each (Control ^ control in this->Controls) {
-		// Check if the control is a Panel and its name starts with "c_panel"
-		if (control->GetType() == Panel::typeid && control->Name->StartsWith("c_panel")) {
-			// Remove the panel
-			this->Controls->Remove(control);
-		}
-	}
+	searchContainer->Controls->Clear();
 	mainContainer->Visible = true;
 	mainContainer->Enabled = true;
 	search_closed = true;
