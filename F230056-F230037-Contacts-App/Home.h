@@ -157,6 +157,7 @@ namespace ContactsApp {
 			this->Controls->Add(this->Contacts);
 			this->Name = L"Home";
 			this->Text = L"Home";
+			this->Load += gcnew System::EventHandler(this, &Home::Home_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -177,5 +178,7 @@ namespace ContactsApp {
 		cl->Focus();
 		this->Show();
 	}
-	};
+	private: System::Void Home_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }

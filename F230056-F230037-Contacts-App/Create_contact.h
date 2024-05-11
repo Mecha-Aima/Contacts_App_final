@@ -12,33 +12,21 @@ namespace ContactsApp {
 	using namespace System::Drawing;
 	using namespace msclr::interop;
 
-	/// <summary>
-	/// Summary for Create_contact
-	/// </summary>
 	public ref class Create_contact : public System::Windows::Forms::Form
 	{
 	public:
 		Create_contact(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 
 		}
 		Create_contact(ContactsBook &book)
 		{
 			b = &book;
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 
 		}
 	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
 		~Create_contact()
 		{
 			b = nullptr;
@@ -105,19 +93,8 @@ namespace ContactsApp {
 	private:
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::Button^ add_button;
-	public:
-	public:
-	public:
-	private:
-	public:
-	private:
 
-
-	protected:
 	private:
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
 		System::ComponentModel::Container^ components;
 		bool is_added = false;
 #pragma region Windows Form Designer generated code
@@ -299,7 +276,6 @@ namespace ContactsApp {
 			this->fname->Name = L"fname";
 			this->fname->Size = System::Drawing::Size(157, 24);
 			this->fname->TabIndex = 3;
-			this->fname->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Create_contact::search_bar_Paint);
 			// 
 			// contactImage
 			// 
@@ -319,7 +295,6 @@ namespace ContactsApp {
 			this->contact_no->Name = L"contact_no";
 			this->contact_no->Size = System::Drawing::Size(325, 24);
 			this->contact_no->TabIndex = 5;
-			this->contact_no->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Create_contact::contact_no_Paint);
 			// 
 			// label1
 			// 
@@ -534,10 +509,6 @@ namespace ContactsApp {
 
 		}
 #pragma endregion
-
-	
-private: System::Void search_bar_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-}
 public:
 	bool isAdded()
 	{
@@ -545,8 +516,6 @@ public:
 	}
 
 private: System::Void Create_contact_Load(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void contact_no_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 }
 
 	   System::Void Create_contact::add_button_Click(System::Object^ sender, System::EventArgs^ e)

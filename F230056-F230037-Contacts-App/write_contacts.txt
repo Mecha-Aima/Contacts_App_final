@@ -1,4 +1,4 @@
-19
+15
 Qainat,Aslam,03331234567,q.aslam@gmail.com
 4,4,Osaka,Japan
 
@@ -43,16 +43,4 @@ Sean,Dealton,02354861034,sean.d@oxford.edu.uk
 
 Richard,Fellan,02315640321,richard.f@gmail.com
 145,23,Berlin,Germany
-
-Sean,Delton,02351652012,sean@gmail.com
-14,15,Venice,Italy
-
-DePaul,Juan,02145302161,depaul.j@outlook.com
-159,13,Barcelona,Spain
-
-Adam,Smith,03214568032,adam.s@yahoo.com
-780,26,San Francisco,USA
-
-Harry,James,03215061234,harry.j@outlook.com
-123,23,Houston,USA
 

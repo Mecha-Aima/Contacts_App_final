@@ -17,9 +17,6 @@ namespace ContactsApp {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Summary for ContactList
-	/// </summary>
 	public ref class ContactList : public System::Windows::Forms::Form
 	{
 	private:
@@ -41,10 +38,11 @@ namespace ContactsApp {
 		{
 			book = new ContactsBook(50);
 			as = new AdvanceSearch();
+			mainContainer = gcnew Panel();
+			searchContainer = gcnew Panel();
+			book->load_from_file("write_contacts.txt");
+			book->save_to_file("write_contacts.txt");
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 
 	protected:
@@ -78,7 +76,7 @@ namespace ContactsApp {
 		void display_results(List<Contact> results)
 		{
 			searchContainer->Controls->Clear();
-			searchContainer->Size = System::Drawing::Size(658, 1000);
+			searchContainer->Width = 658;
 			searchContainer->BackColor = Color::Transparent;
 			searchContainer->Location = System::Drawing::Point(17, 60);
 			searchContainer->Margin = System::Windows::Forms::Padding(0, 0, 0, 0);
@@ -197,7 +195,7 @@ namespace ContactsApp {
 		void ContactList::DisplayContacts()
 		{
 			mainContainer->Controls->Clear();
-			mainContainer->Size = System::Drawing::Size(658, 1000);
+			mainContainer->Width = 658;
 			int total_h = 0;
 			mainContainer->BackColor = Color::Transparent;
 			mainContainer->Location = System::Drawing::Point(17, 60);
@@ -351,7 +349,7 @@ namespace ContactsApp {
 			// close
 			// 
 			this->close->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"close.Image")));
-			this->close->Location = System::Drawing::Point(615, 77);
+			this->close->Location = System::Drawing::Point(636, 77);
 			this->close->Name = L"close";
 			this->close->Size = System::Drawing::Size(21, 33);
 			this->close->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -395,21 +393,16 @@ namespace ContactsApp {
 
 		}
 #pragma endregion
-	private: System::Void ContactList_Load(System::Object^ sender, System::EventArgs^ e) {
-		book->load_from_file("write_contacts.txt");
-		book->save_to_file("write_contacts.txt");	// In case we want to write to a different file
+	private: System::Void ContactList_Load(System::Object^ sender, System::EventArgs^ e) {	
 		this->Focus();
-		mainContainer = gcnew Panel();
-		searchContainer = gcnew Panel();
 		searchContainer->Name = "search_container";
 		DisplayContacts();
 		cc = gcnew Create_contact(*book);
 		search_field->Enabled = false;
+		search_field->Text = "Search Contacts...";
 		
 	}
 
-private: System::Void add_button_panel_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-}
 	   // Create contact button
 private: System::Void add_button_Click(System::Object^ sender, System::EventArgs^ e) {
 	cc->ShowDialog();
@@ -427,11 +420,12 @@ private: System::Void search_bar_MouseClick(System::Object^ sender, System::Wind
 	search_bar->Controls["search_field"]->Text = "";
 }
 private: System::Void search_field_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
-	if (e->KeyChar == (char)Keys::Enter && search_field->Text != "Search contact...") {
+	if (e->KeyChar == (char)Keys::Enter) {
 		search_field->Enabled = false;
 		this->BackColor = System::Drawing::Color::LightSteelBlue;
 		String^ query = search_field->Text;
 		close->Visible = true;
+		searchContainer->Show();
 		as->perform_search(marshal_as<std::string>(query), *book);
 		List<Contact> results = as->get_results();
 		display_results(results);
@@ -439,6 +433,7 @@ private: System::Void search_field_KeyPress(System::Object^ sender, System::Wind
 }
 private: System::Void close_Click(System::Object^ sender, System::EventArgs^ e) {
 	searchContainer->Controls->Clear();
+	searchContainer->Hide();
 	mainContainer->Visible = true;
 	mainContainer->Enabled = true;
 	search_closed = true;
@@ -450,8 +445,11 @@ private: System::Void close_Click(System::Object^ sender, System::EventArgs^ e) 
 
 	
 private: System::Void back_Click(System::Object^ sender, System::EventArgs^ e) {
-	ContactList::Close();
+		ContactList::Close();
+
 }
+
+	
 };
 }
 

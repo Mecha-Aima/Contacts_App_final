@@ -108,7 +108,7 @@ namespace ContactsApp {
 		   System::Void display_history()
 		   {
 			   historyPanel->Controls->Clear();
-			   historyPanel->Size = System::Drawing::Size(658, 1000);
+			   historyPanel->Width = 658;
 			   int total_h = 0;
 			   historyPanel->BackColor = Color::Transparent;
 			   historyPanel->Location = System::Drawing::Point(17, 60);
@@ -120,7 +120,7 @@ namespace ContactsApp {
 				   // Create a new Panel control for each contact
 				   Panel^ contactPanel = gcnew Panel();
 				   contactPanel->BackColor = System::Drawing::Color::White;
-				   contactPanel->Location = System::Drawing::Point(17, 130 + i * 120); // Adjust the Y position based on the index
+				   contactPanel->Location = System::Drawing::Point(17, 90 + i * 120); // Adjust the Y position based on the index
 				   contactPanel->Size = System::Drawing::Size(658, 104);
 
 				   // Create and configure PictureBox

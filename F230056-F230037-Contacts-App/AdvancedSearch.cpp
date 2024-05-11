@@ -33,7 +33,7 @@ void AdvanceSearch::perform_search(std::string query, ContactsBook& book)
     }
 
     string q = lower(query);
-    for (size_t i = 0; i < book.total_contacts(); i++)
+    for (int i = 0; i < book.total_contacts(); i++)
     {
         if (is_query_in_string(q, book[i].get_first_name()) ||
             is_query_in_string(q, book[i].get_last_name()) ||

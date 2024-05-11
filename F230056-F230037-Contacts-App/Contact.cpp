@@ -113,15 +113,15 @@ void Contact::print_contact()
 }
 
 // Return a deep copy of *this
-Contact* Contact::copy_contact()
+Contact& Contact::copy_contact()
 {
-	Contact* copiedContact = new Contact();
-	copiedContact->first_name = this->first_name;
-	copiedContact->last_name = this->last_name;
-	copiedContact->mobile_number = this->mobile_number;
-	copiedContact->email_address = this->email_address;
-	copiedContact->contact_id = this->contact_id;
-	copiedContact->address = new Address(this->address->get_house(),
+	Contact copiedContact;
+	copiedContact.first_name = this->first_name;
+	copiedContact.last_name = this->last_name;
+	copiedContact.mobile_number = this->mobile_number;
+	copiedContact.email_address = this->email_address;
+	copiedContact.contact_id = this->contact_id;
+	copiedContact.address = new Address(this->address->get_house(),
 		this->address->get_street(),
 		this->address->get_city(),
 		this->address->get_country());

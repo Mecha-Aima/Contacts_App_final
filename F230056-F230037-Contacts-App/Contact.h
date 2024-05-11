@@ -19,7 +19,7 @@ private:
 
 public:
 	bool equals(Contact contact);
-	Contact* copy_contact();
+	Contact& copy_contact();
 	void print_contact();
 
 	Contact();

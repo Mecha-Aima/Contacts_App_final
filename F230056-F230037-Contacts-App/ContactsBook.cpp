@@ -28,7 +28,7 @@ ContactsBook::ContactsBook(const ContactsBook& other)
 	// Copy the contacts from the other object to this object
 	for (size_t i = 0; i < contacts_count; i++)
 	{
-		contacts_list[i] = *(other.contacts_list[i].copy_contact());
+		contacts_list[i] = other.contacts_list[i];
 	}
 }
 
@@ -48,13 +48,13 @@ void ContactsBook::add_contact(Contact& contact)
 void ContactsBook::delete_contact(std::string first_name, std::string last_name)
 {
 	// Search the contact in the list according to the given first name and last name
-	for (size_t i = 0; i < contacts_count; i++)
+	for (int i = 0; i < contacts_count; i++)
 	{
 		// If found delete the contact
 		if (contacts_list[i].get_first_name() == first_name && contacts_list[i].get_last_name() == last_name)
 		{
 			// Shift the subsequent contacts to fill the gap
-			for (size_t j = i; j < contacts_count - 1; j++)
+			for (int j = i; j < contacts_count - 1; j++)
 			{
 				contacts_list[j] = contacts_list[j + 1];
 				// Update the contact id of the shifted contacts
@@ -91,7 +91,7 @@ void ContactsBook::resize_list()
 	Contact* temp_contacts_list = new Contact[new_size];
 	// Copy the contacts_list array to the new array
 	for (int i = 0; i < contacts_count; ++i) {
-		temp_contacts_list[i] = *(contacts_list[i].copy_contact());
+		temp_contacts_list[i] = contacts_list[i].copy_contact();
 	}
 	// Delete the old array
 	delete[] contacts_list;
@@ -100,50 +100,50 @@ void ContactsBook::resize_list()
 	size_of_contacts = new_size;
 }
 
-Contact* ContactsBook::search_contact(std::string first_name, std::string last_name)
-{
-	// Search the contact in the list according to the given first name and last name
-	for (size_t i = 0; i < contacts_count; i++)
-	{
-		// If found return a copy of the contact using copy func
-		if (contacts_list[i].get_first_name() == first_name || contacts_list[i].get_last_name() == last_name)
-		{
-			return contacts_list[i].copy_contact();
-		}
-	}
-	// If not found return nullptr
-	return nullptr;
-}
-
-Contact* ContactsBook::search_contact(std::string phone)
-{
-	// Search the contact in the list according to the given phone number
-	for (size_t i = 0; i < contacts_count; i++)
-	{
-		// If found return a copy of the contact using copy func
-		if (contacts_list[i].get_mobile_number() == phone)
-		{
-			return contacts_list[i].copy_contact();
-		}
-	}
-	// If not found return nullptr
-	return nullptr;
-}
-
-Contact* ContactsBook::search_contact(const Address& address)
-{
-	// Search the contact in the list according to the given address
-	for (size_t i = 0; i < contacts_count; i++)
-	{
-		// If found return a copy of the contact using copy func
-		if (contacts_list[i].get_address()->equals(address))
-		{
-			return contacts_list[i].copy_contact();
-		}
-	}
-	// If not found return nullptr
-	return nullptr;
-}
+//Contact* ContactsBook::search_contact(std::string first_name, std::string last_name)
+//{
+//	// Search the contact in the list according to the given first name and last name
+//	for (size_t i = 0; i < contacts_count; i++)
+//	{
+//		// If found return a copy of the contact using copy func
+//		if (contacts_list[i].get_first_name() == first_name || contacts_list[i].get_last_name() == last_name)
+//		{
+//			return contacts_list[i].copy_contact();
+//		}
+//	}
+//	// If not found return nullptr
+//	return nullptr;
+//}
+//
+//Contact* ContactsBook::search_contact(std::string phone)
+//{
+//	// Search the contact in the list according to the given phone number
+//	for (size_t i = 0; i < contacts_count; i++)
+//	{
+//		// If found return a copy of the contact using copy func
+//		if (contacts_list[i].get_mobile_number() == phone)
+//		{
+//			return contacts_list[i].copy_contact();
+//		}
+//	}
+//	// If not found return nullptr
+//	return nullptr;
+//}
+//
+//Contact* ContactsBook::search_contact(const Address& address)
+//{
+//	// Search the contact in the list according to the given address
+//	for (size_t i = 0; i < contacts_count; i++)
+//	{
+//		// If found return a copy of the contact using copy func
+//		if (contacts_list[i].get_address()->equals(address))
+//		{
+//			return contacts_list[i].copy_contact();
+//		}
+//	}
+//	// If not found return nullptr
+//	return nullptr;
+//}
 
 Contact* ContactsBook::copy_list(Contact* contacts_list)
 {
@@ -153,7 +153,7 @@ Contact* ContactsBook::copy_list(Contact* contacts_list)
 	Contact* temp = new Contact[contacts_count];
 	for (size_t i = 0; i < contacts_count; i++)
 	{
-		temp[i] = *(contacts_list[i].copy_contact());
+		temp[i] = contacts_list[i].copy_contact();
 	}
 	return temp;
 
@@ -315,7 +315,7 @@ ContactsBook& ContactsBook::operator=(const ContactsBook& other)
 	// Copy the contacts from the other object to this object
 	for (size_t i = 0; i < contacts_count; i++)
 	{
-		contacts_list[i] = *(other.contacts_list[i].copy_contact());
+		contacts_list[i] = other.contacts_list[i];
 	}
 	return *this;
 }
