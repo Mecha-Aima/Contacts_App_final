@@ -15,6 +15,14 @@ Address::Address(std::string house, std::string street, std::string city, std::s
 	this->country = country;
 }
 
+Address::Address(const Address& other)
+{
+	this->house = other.house;
+	this->street = other.street;
+	this->city = other.city;
+	this->country = other.country;
+}
+
 // Getters
 std::string Address::get_house() const { return house; }
 std::string Address::get_street() const { return street; }

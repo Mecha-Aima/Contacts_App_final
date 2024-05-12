@@ -25,16 +25,18 @@ Contact::Contact(std::string first_name, std::string last_name, std::string mobi
 
 Contact::Contact(const Contact& other)
 {
-	if (this != &other)
-	{
 		this->contact_id = other.contact_id;
 		this->first_name = other.first_name;
 		this->last_name = other.last_name;
 		this->mobile_number = other.mobile_number;
 		this->email_address = other.email_address;
-		this->address = new Address(other.address->get_house(), other.address->get_street(), other.address->get_city(), other.address->get_country());
+		if (other.address != nullptr) {
+			this->address = new Address(other.address->get_house(), other.address->get_street(), other.address->get_city(), other.address->get_country());
+		}
+		else {
+			this->address = nullptr;
+		}
 		this->search_count = other.search_count;
-	}
 }
 
 //Contact::~Contact()
@@ -175,7 +177,13 @@ Contact& Contact::operator=(const Contact& other)
 		this->last_name = other.last_name;
 		this->mobile_number = other.mobile_number;
 		this->email_address = other.email_address;
-		this->address = new Address(other.address->get_house(), other.address->get_street(), other.address->get_city(), other.address->get_country());
+		if (this->address != nullptr) {
+			delete this->address;
+			this->address = nullptr;
+		}	
+		if (other.address != nullptr) {
+			this->address = new Address(*other.address);
+		}
 		this->search_count = other.search_count;
 	}
 	return *this;

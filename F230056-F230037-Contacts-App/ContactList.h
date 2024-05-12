@@ -33,6 +33,10 @@ namespace ContactsApp {
 		bool search_closed = false;
 
 	private: System::Windows::Forms::ComboBox^ sort_by;
+	private: System::Windows::Forms::Label^ sort_by_label;
+	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::Button^ merge_duplicates;
+
 
 	private: System::Windows::Forms::PictureBox^ back;
 		   
@@ -78,6 +82,11 @@ namespace ContactsApp {
 
 		void display_results(List<Contact> results)
 		{
+			// Delete previous controls, if any (efficient use of memory)
+			for each (Control ^ ctrl in searchContainer->Controls)
+			{
+				delete ctrl;
+			}
 			searchContainer->Controls->Clear();
 			searchContainer->Width = 658;
 			searchContainer->BackColor = Color::Transparent;
@@ -122,7 +131,7 @@ namespace ContactsApp {
 				email_label->Width = 200;
 				c_panel->Controls->Add(email_label);
 
-				// Create and configure Label for contact_id
+				// Create and configure Label for contact_id (hidden)
 				Label^ id_label = gcnew Label();
 				id_label->Location = System::Drawing::Point(400, 62);
 				int id = results[i].get_contact_id();
@@ -195,13 +204,17 @@ namespace ContactsApp {
 			}
 		}
 
-		void ContactList::DisplayContacts()
+		void ContactList::DisplayContacts(ContactsBook *book)
 		{
+			// Delete previous controls, if any (efficient use of memory)
+			for each (Control ^ ctrl in mainContainer->Controls)
+			{
+				delete ctrl;
+			}
 			mainContainer->Controls->Clear();
 			mainContainer->Width = 658;
-			int total_h = 0;
 			mainContainer->BackColor = Color::Transparent;
-			mainContainer->Location = System::Drawing::Point(17, 60);
+			mainContainer->Location = System::Drawing::Point(17, 80);
 			mainContainer->Margin = System::Windows::Forms::Padding(0, 0, 0, 0);
 			this->Controls->Add(mainContainer);
 			for (int i = 0; i < book->total_contacts(); ++i)
@@ -227,7 +240,7 @@ namespace ContactsApp {
 					static_cast<System::Byte>(0));
 				fullNameLabel->ForeColor = System::Drawing::Color::MidnightBlue;
 				fullNameLabel->Location = System::Drawing::Point(99, 22);
-				fullNameLabel->Text = gcnew String((book->get_contact(i).get_first_name() + " " + book->get_contact(i).get_last_name()).c_str()); 
+				fullNameLabel->Text = gcnew String(((*book)[i].get_first_name() + " " + (*book)[i].get_last_name()).c_str());
 				contactPanel->Controls->Add(fullNameLabel); // Add Label to the panel
 
 				// Create and configure Label for phone number
@@ -236,8 +249,17 @@ namespace ContactsApp {
 				phoneNumberLabel->Font = gcnew System::Drawing::Font(L"Montserrat", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0));
 				phoneNumberLabel->Location = System::Drawing::Point(99, 62);
-				phoneNumberLabel->Text = gcnew String(book->get_contact(i).get_mobile_number().c_str()); // Assuming get_mobile_number() returns a string
+				phoneNumberLabel->Text = gcnew String((*book)[i].get_mobile_number().c_str()); // Assuming get_mobile_number() returns a string
 				contactPanel->Controls->Add(phoneNumberLabel); // Add Label to the panel
+
+				// Create and configure Label for contact_id (hidden)
+				Label^ id_label = gcnew Label();
+				id_label->Location = System::Drawing::Point(400, 62);
+				int id = (*book)[i].get_contact_id();
+				id_label->Text = id.ToString();
+				id_label->Name = "id_label";
+				id_label->Visible = false;
+				contactPanel->Controls->Add(id_label);
 
 				contactPanel->Click += gcnew System::EventHandler(this, &ContactList::ContactPanel_Click);
 
@@ -249,27 +271,58 @@ namespace ContactsApp {
 			
 		}
 
-		void ContactPanel_Click(System::Object^ sender, System::EventArgs^ e)
+		// Control Panel click in mainContainer
+		void ContactList::ContactPanel_Click(System::Object^ sender, System::EventArgs^ e)
 		{
-			
 			// Cast the sender object to Panel^
 			Panel^ clickedPanel = dynamic_cast<Panel^>(sender);
-
-			int index = mainContainer->Controls->IndexOf(clickedPanel);
-			if (index >= 0)
+			if (clickedPanel == nullptr)
 			{
-				Contact clicked = book->get_contact(index);
-				cd = gcnew Contact_details(clicked, *book);
-				cd->ShowDialog();
-				cd->Focus();
-				// Handle contact deletion
-				if (cd->get_deleted())
+				MessageBox::Show("Clicked panel is null");
+				return;
+			}
+
+			// Retrieve the id_label from the clicked panel
+			Label^ idLabel = dynamic_cast<Label^>(clickedPanel->Controls["id_label"]);
+			if (idLabel == nullptr)
+			{
+				MessageBox::Show("ID label is null");
+				return;
+			}
+
+			String^ id_str = idLabel->Text;
+			if (!String::IsNullOrEmpty(id_str))
+			{
+				int id;
+				try
 				{
-					DisplayContacts();
-					cd->set_deleted(false);
+					id = System::Convert::ToInt32(id_str);
+					Contact clicked = book->get_contact(id);
+					cd = gcnew Contact_details(clicked, *book);
+					cd->ShowDialog();
+					cd->Focus();
+					// Handle contact deletion
+					if (cd->get_deleted())
+					{
+						DisplayContacts(this->book);
+						cd->set_deleted(false);
+					}
+				}
+				catch (System::Exception^ ex)
+				{
+					MessageBox::Show(ex->Message);
+				}
+				catch (std::exception& ex)
+				{
+					MessageBox::Show(marshal_as<String^>(ex.what()));
 				}
 			}
+			else
+			{
+				MessageBox::Show("There is a problem with the contact ID");
+			}
 		}
+
 		
 
 		private:
@@ -289,9 +342,13 @@ namespace ContactsApp {
 			this->close = (gcnew System::Windows::Forms::PictureBox());
 			this->back = (gcnew System::Windows::Forms::PictureBox());
 			this->sort_by = (gcnew System::Windows::Forms::ComboBox());
+			this->sort_by_label = (gcnew System::Windows::Forms::Label());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->merge_duplicates = (gcnew System::Windows::Forms::Button());
 			this->search_bar->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->close))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->back))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// search_field
@@ -322,26 +379,24 @@ namespace ContactsApp {
 			// 
 			// search_bar
 			// 
-			this->search_bar->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
 			this->search_bar->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->search_bar->Controls->Add(this->search_field);
 			this->search_bar->Location = System::Drawing::Point(92, 77);
 			this->search_bar->Name = L"search_bar";
-			this->search_bar->Size = System::Drawing::Size(483, 31);
+			this->search_bar->Size = System::Drawing::Size(552, 31);
 			this->search_bar->TabIndex = 2;
 			this->search_bar->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &ContactList::search_bar_MouseClick);
 			// 
 			// add_button
 			// 
-			this->add_button->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->add_button->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->add_button->BackColor = System::Drawing::Color::DarkCyan;
 			this->add_button->FlatAppearance->BorderColor = System::Drawing::Color::DarkCyan;
 			this->add_button->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->add_button->Font = (gcnew System::Drawing::Font(L"Montserrat Medium", 8.249999F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->add_button->ForeColor = System::Drawing::Color::White;
-			this->add_button->Location = System::Drawing::Point(559, 19);
+			this->add_button->Location = System::Drawing::Point(568, 19);
 			this->add_button->Name = L"add_button";
 			this->add_button->Padding = System::Windows::Forms::Padding(8, 0, 8, 0);
 			this->add_button->Size = System::Drawing::Size(117, 33);
@@ -353,7 +408,7 @@ namespace ContactsApp {
 			// close
 			// 
 			this->close->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"close.Image")));
-			this->close->Location = System::Drawing::Point(636, 77);
+			this->close->Location = System::Drawing::Point(699, 77);
 			this->close->Name = L"close";
 			this->close->Size = System::Drawing::Size(21, 33);
 			this->close->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -375,20 +430,63 @@ namespace ContactsApp {
 			// 
 			// sort_by
 			// 
+			this->sort_by->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->sort_by->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->sort_by->Font = (gcnew System::Drawing::Font(L"Montserrat", 8.249999F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->sort_by->FormattingEnabled = true;
-			this->sort_by->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
+			this->sort_by->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
 				L"First Name(A-Z)", L"First Name (Z-A)", L"Last Name (A-Z)",
-					L"Last Name (Z-A)"
+					L"Last Name (Z-A)", L"Default"
 			});
-			this->sort_by->Location = System::Drawing::Point(400, 25);
+			this->sort_by->Location = System::Drawing::Point(92, 118);
 			this->sort_by->Name = L"sort_by";
-			this->sort_by->Size = System::Drawing::Size(146, 23);
+			this->sort_by->Size = System::Drawing::Size(115, 23);
 			this->sort_by->TabIndex = 10;
-			this->sort_by->Text = L"Sort By";
 			this->sort_by->SelectedIndexChanged += gcnew System::EventHandler(this, &ContactList::sort_by_SelectedIndexChanged);
+			// 
+			// sort_by_label
+			// 
+			this->sort_by_label->AutoSize = true;
+			this->sort_by_label->Font = (gcnew System::Drawing::Font(L"Montserrat", 8.249999F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->sort_by_label->Location = System::Drawing::Point(29, 121);
+			this->sort_by_label->Name = L"sort_by_label";
+			this->sort_by_label->Size = System::Drawing::Size(48, 15);
+			this->sort_by_label->TabIndex = 11;
+			this->sort_by_label->Text = L"Sort By:";
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(699, 15);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(28, 40);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->pictureBox1->TabIndex = 12;
+			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Click += gcnew System::EventHandler(this, &ContactList::pictureBox1_Click);
+			// 
+			// merge_duplicates
+			// 
+			this->merge_duplicates->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->merge_duplicates->BackColor = System::Drawing::Color::LightBlue;
+			this->merge_duplicates->Enabled = false;
+			this->merge_duplicates->FlatAppearance->BorderColor = System::Drawing::Color::DarkGray;
+			this->merge_duplicates->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->merge_duplicates->Font = (gcnew System::Drawing::Font(L"Montserrat Medium", 8.249999F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->merge_duplicates->ForeColor = System::Drawing::Color::Black;
+			this->merge_duplicates->Location = System::Drawing::Point(617, 61);
+			this->merge_duplicates->Name = L"merge_duplicates";
+			this->merge_duplicates->Padding = System::Windows::Forms::Padding(8, 0, 8, 0);
+			this->merge_duplicates->Size = System::Drawing::Size(144, 33);
+			this->merge_duplicates->TabIndex = 13;
+			this->merge_duplicates->Text = L"Merge Duplicates";
+			this->merge_duplicates->UseVisualStyleBackColor = false;
+			this->merge_duplicates->Visible = false;
+			this->merge_duplicates->Click += gcnew System::EventHandler(this, &ContactList::merge_duplicates_Click);
 			// 
 			// ContactList
 			// 
@@ -396,7 +494,10 @@ namespace ContactsApp {
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::Color::AliceBlue;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
-			this->ClientSize = System::Drawing::Size(704, 469);
+			this->ClientSize = System::Drawing::Size(773, 469);
+			this->Controls->Add(this->merge_duplicates);
+			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->sort_by_label);
 			this->Controls->Add(this->sort_by);
 			this->Controls->Add(this->back);
 			this->Controls->Add(this->close);
@@ -410,6 +511,7 @@ namespace ContactsApp {
 			this->search_bar->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->close))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->back))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -418,7 +520,7 @@ namespace ContactsApp {
 	private: System::Void ContactList_Load(System::Object^ sender, System::EventArgs^ e) {	
 		this->Focus();
 		searchContainer->Name = "search_container";
-		DisplayContacts();
+		DisplayContacts(this->book);
 		cc = gcnew Create_contact(*book);
 		search_field->Enabled = false;
 		search_field->Text = "Search Contacts...";
@@ -431,7 +533,7 @@ private: System::Void add_button_Click(System::Object^ sender, System::EventArgs
 	cc->Focus();
 	if (cc->isAdded())
 	{
-		DisplayContacts();
+		DisplayContacts(this->book);
 		book->save_to_file("write_contacts.txt");
 	}
 	
@@ -447,6 +549,8 @@ private: System::Void search_field_KeyPress(System::Object^ sender, System::Wind
 		this->BackColor = System::Drawing::Color::LightSteelBlue;
 		String^ query = search_field->Text;
 		close->Visible = true;
+		sort_by_label->Visible = false;
+		sort_by->Visible = false;
 		searchContainer->Show();
 		as->perform_search(marshal_as<std::string>(query), *book);
 		List<Contact> results = as->get_results();
@@ -462,6 +566,8 @@ private: System::Void close_Click(System::Object^ sender, System::EventArgs^ e) 
 	this->BackColor = System::Drawing::Color::AliceBlue;
 	close->Visible = false;
 	heading->Text = "Your contacts";
+	sort_by_label->Visible = true;
+	sort_by->Visible = true;
 }
 	
 
@@ -475,12 +581,51 @@ private: System::Void back_Click(System::Object^ sender, System::EventArgs^ e) {
 private: System::Void sort_by_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 	ComboBox^ comboBox = (ComboBox^)sender;
 	int selectedIndex = comboBox->SelectedIndex;
-
+	ContactsBook* sorted_copy = new ContactsBook(*book);
 	switch (selectedIndex)
 	{
 	case 0:
-
+		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::fn_less_than);
+		DisplayContacts(sorted_copy);
+		break;
+	
+	case 1:
+		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::fn_greater_than);
+		DisplayContacts(sorted_copy);
+		break;
+	case 2:
+		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::ln_less_than);
+		DisplayContacts(sorted_copy);
+		break;
+	case 3:
+		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::ln_greater_than);
+		DisplayContacts(sorted_copy);
+		break;
+	case 4:
+		DisplayContacts(this->book);
+		break;
 	}
+	
+
+}
+
+private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (merge_duplicates->Visible == false)
+	{
+		merge_duplicates->Visible = true;
+		merge_duplicates->Enabled = true;
+	}
+	else
+	{
+		merge_duplicates->Visible = false;
+		merge_duplicates->Enabled = false;
+	}
+	
+}
+private: System::Void merge_duplicates_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->book->merge_duplicates();
+	this->book->save_to_file("write_contacts.txt");
+	DisplayContacts(this->book);
 }
 };
 }

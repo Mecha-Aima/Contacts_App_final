@@ -32,6 +32,17 @@ bool SearchHistory::check_frequent_search(Contact& contact)
 
 void SearchHistory::update_frequent_search(HistoryObject& h)
 {
+    for (int i = 0; i < frequentSearch.size(); i++)
+    {
+        if (frequentSearch[i].get_contact().get_contact_id() == h.get_contact().get_contact_id())
+        {
+            // The contact is already in the top 5, update its search count
+            frequentSearch[i].get_contact().add_search_count();
+            // Sort the frequent search list based on search count
+            sort_list(frequentSearch, &h, HistoryObject::by_search_count);
+            return;
+        }
+    }
     if (frequentSearch.size() < 5)
         frequentSearch.append(h);
     else
