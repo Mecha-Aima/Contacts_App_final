@@ -91,6 +91,6 @@ std::istream& operator>>(std::istream& in, Address& address)
 // Overload cout for Address
 std::ostream& operator<<(std::ostream& out, const Address& address)
 {
-	out << address.house << ", " << address.street << ", " << address.city << ", " << address.country;
+	out << address.house << "," << address.street << "," << address.city << "," << address.country;
 	return out;
 }

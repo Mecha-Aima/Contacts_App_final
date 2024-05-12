@@ -31,6 +31,9 @@ namespace ContactsApp {
 		Panel^ mainContainer;
 		Panel^ searchContainer;
 		bool search_closed = false;
+
+	private: System::Windows::Forms::ComboBox^ sort_by;
+
 	private: System::Windows::Forms::PictureBox^ back;
 		   
 	public:
@@ -285,6 +288,7 @@ namespace ContactsApp {
 			this->add_button = (gcnew System::Windows::Forms::Button());
 			this->close = (gcnew System::Windows::Forms::PictureBox());
 			this->back = (gcnew System::Windows::Forms::PictureBox());
+			this->sort_by = (gcnew System::Windows::Forms::ComboBox());
 			this->search_bar->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->close))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->back))->BeginInit();
@@ -369,6 +373,23 @@ namespace ContactsApp {
 			this->back->TabStop = false;
 			this->back->Click += gcnew System::EventHandler(this, &ContactList::back_Click);
 			// 
+			// sort_by
+			// 
+			this->sort_by->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->sort_by->Font = (gcnew System::Drawing::Font(L"Montserrat", 8.249999F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->sort_by->FormattingEnabled = true;
+			this->sort_by->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
+				L"First Name(A-Z)", L"First Name (Z-A)", L"Last Name (A-Z)",
+					L"Last Name (Z-A)"
+			});
+			this->sort_by->Location = System::Drawing::Point(400, 25);
+			this->sort_by->Name = L"sort_by";
+			this->sort_by->Size = System::Drawing::Size(146, 23);
+			this->sort_by->TabIndex = 10;
+			this->sort_by->Text = L"Sort By";
+			this->sort_by->SelectedIndexChanged += gcnew System::EventHandler(this, &ContactList::sort_by_SelectedIndexChanged);
+			// 
 			// ContactList
 			// 
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
@@ -376,6 +397,7 @@ namespace ContactsApp {
 			this->BackColor = System::Drawing::Color::AliceBlue;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
 			this->ClientSize = System::Drawing::Size(704, 469);
+			this->Controls->Add(this->sort_by);
 			this->Controls->Add(this->back);
 			this->Controls->Add(this->close);
 			this->Controls->Add(this->add_button);
@@ -450,6 +472,16 @@ private: System::Void back_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 
 	
+private: System::Void sort_by_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	ComboBox^ comboBox = (ComboBox^)sender;
+	int selectedIndex = comboBox->SelectedIndex;
+
+	switch (selectedIndex)
+	{
+	case 0:
+
+	}
+}
 };
 }
 

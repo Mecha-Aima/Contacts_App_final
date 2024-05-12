@@ -45,6 +45,7 @@ namespace ContactsApp {
 		System::ComponentModel::Container^ components;
 		Panel^ historyPanel;
 	private: System::Windows::Forms::PictureBox^ back;
+
 	private: System::Windows::Forms::Label^ heading;
 
 #pragma region Windows Form Designer generated code
@@ -75,20 +76,20 @@ namespace ContactsApp {
 			   // back
 			   // 
 			   this->back->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"back.Image")));
-			   this->back->Location = System::Drawing::Point(48, 51);
+			   this->back->Location = System::Drawing::Point(53, 37);
 			   this->back->Name = L"back";
-			   this->back->Size = System::Drawing::Size(27, 22);
+			   this->back->Size = System::Drawing::Size(36, 36);
 			   this->back->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			   this->back->TabIndex = 24;
 			   this->back->TabStop = false;
-			   this->back->Click += gcnew System::EventHandler(this, &History::back_Click);
+			   this->back->Click += gcnew System::EventHandler(this, &History::back_Click_1);
 			   // 
 			   // History
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->AutoScroll = true;
-			   this->BackColor = System::Drawing::Color::DarkSlateGray;
+			   this->BackColor = System::Drawing::Color::LightSlateGray;
 			   this->ClientSize = System::Drawing::Size(704, 441);
 			   this->Controls->Add(this->back);
 			   this->Controls->Add(this->heading);
@@ -164,9 +165,8 @@ namespace ContactsApp {
 			   historyPanel->AutoScroll = true;
 		   }
 
-
-	private: System::Void back_Click(System::Object^ sender, System::EventArgs^ e) {
-		History::Close();
-	}
+private: System::Void back_Click_1(System::Object^ sender, System::EventArgs^ e) {
+	History::Close();
+}
 };
 }

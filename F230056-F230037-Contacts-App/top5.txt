@@ -1,15 +1,20 @@
-Contact: David Mallan 02345618921 david.m@harvard.edu.us
-145, 23, Washington DC, Seattle
-Time: 1:7:12
-Date: 2024/5/12
+Sean Dealton 02354861034 sean.d@oxford.edu.uk
+568,11,London,United Kingdom
+2:11:52
+2024/5/12
 
-Contact: Zara Khalil 04512687902 zara.k@gmail.com
-145, 16, Tokyo, Japan
-Time: 1:7:40
-Date: 2024/5/12
+Richard Fellan 02315640321 richard.f@gmail.com
+145,23,Berlin,Germany
+2:11:57
+2024/5/12
 
-Contact: Zubair Khan 03331233468 z.khan@gmail.com
-75, 25, Istanbul, Turkey
-Time: 1:7:45
-Date: 2024/5/12
+David Mallan 02345618921 david.m@harvard.edu.us
+145,23,Washington DC,Seattle
+2:12:24
+2024/5/12
+
+Zubair Khan 03331233468 z.khan@gmail.com
+75,25,Istanbul,Turkey
+2:12:32
+2024/5/12
 

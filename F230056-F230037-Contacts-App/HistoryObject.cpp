@@ -79,8 +79,8 @@ bool HistoryObject::operator==(const HistoryObject& other) const {
 
 // cout overload
 ostream& operator<<(ostream& os, const HistoryObject& history_object) {
-    os << "Contact: " << history_object.contact << endl;
-    os << "Time: " << history_object.time.get_hours() << ":" << history_object.time.get_minutes() << ":" << history_object.time.get_seconds() << endl;
-    os << "Date: " << history_object.date.get_day() << "/" << history_object.date.get_month() << "/" << history_object.date.get_year() << endl;
+    os << history_object.contact << endl;
+    os << history_object.time.get_hours() << ":" << history_object.time.get_minutes() << ":" << history_object.time.get_seconds() << endl;
+    os << history_object.date.get_day() << "/" << history_object.date.get_month() << "/" << history_object.date.get_year() << endl;
     return os;
 }

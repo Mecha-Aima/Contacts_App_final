@@ -87,6 +87,7 @@ List<HistoryObject> SearchHistory::get_top5() {
     return frequentSearch;
 }
 
+
 // Save records to file
 void SearchHistory::save_history(string historyFile) {
     ofstream file;
@@ -110,3 +111,4 @@ void SearchHistory::save_top5(string top5File) {
         file.close();
     }
 }
+
