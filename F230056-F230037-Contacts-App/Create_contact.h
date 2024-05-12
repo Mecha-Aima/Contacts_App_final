@@ -22,6 +22,7 @@ namespace ContactsApp {
 		}
 		Create_contact(ContactsBook &book)
 		{
+			// Create a pointer to the ContactsBook in order to access it in this form
 			b = &book;
 			InitializeComponent();
 
@@ -40,7 +41,6 @@ namespace ContactsApp {
 
 	private: System::Windows::Forms::Label^ heading;
 	public: System::Windows::Forms::Panel^ fname;
-	private:
 
 	private:
 		ContactsBook* b;
@@ -48,27 +48,21 @@ namespace ContactsApp {
 
 	private: System::Windows::Forms::PictureBox^ contactImage;
 	public: System::Windows::Forms::Panel^ contact_no;
-	private:
-
-	private:
-	public:
 
 	private:
 	private: System::Windows::Forms::Label^ label1;
 	public: System::Windows::Forms::Panel^ email;
-	private:
-	public:
+
 
 	private:
 	private: System::Windows::Forms::Label^ number;
 	public: System::Windows::Forms::Panel^ lname;
-	private:
+
 
 	private:	private: System::Windows::Forms::Label^ label2;
 	public: System::Windows::Forms::Panel^ street_no;
 	public: System::Windows::Forms::Panel^ house_no;
-	private:
-	private:
+	
 	public: System::Windows::Forms::Panel^ country;
 	private:
 
@@ -88,9 +82,7 @@ namespace ContactsApp {
 	public: System::Windows::Forms::Panel^ panel3;
 	private:
 	private: System::Windows::Forms::Label^ label5;
-	public:
 	public: System::Windows::Forms::Panel^ panel4;
-	private:
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::Button^ add_button;
 

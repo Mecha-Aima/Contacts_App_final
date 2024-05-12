@@ -100,6 +100,7 @@ void ContactsBook::resize_list()
 	size_of_contacts = new_size;
 }
 
+// -------------------------FIRST DELIVARABLE-----------------------------------------
 //Contact* ContactsBook::search_contact(std::string first_name, std::string last_name)
 //{
 //	// Search the contact in the list according to the given first name and last name

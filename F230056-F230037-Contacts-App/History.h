@@ -9,9 +9,6 @@ namespace ContactsApp {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Summary for History
-	/// </summary>
 	public ref class History : public System::Windows::Forms::Form
 	{
 	public:
@@ -20,16 +17,9 @@ namespace ContactsApp {
 			historyPanel = gcnew Panel();
 			frequentSearchPanel = gcnew Panel();
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 		
 
-	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
 		~History()
 		{
 			if (components)
@@ -83,7 +73,7 @@ namespace ContactsApp {
 			   // 
 			   // back
 			   // 
-			   this->back->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"back.Image")));
+			   this->back->ImageLocation = L"left-arrow_white.png";
 			   this->back->Location = System::Drawing::Point(53, 37);
 			   this->back->Name = L"back";
 			   this->back->Size = System::Drawing::Size(36, 36);
@@ -150,6 +140,7 @@ namespace ContactsApp {
 
 		   System::Void display_history()
 		   {
+			   // Add the history panel which will contain 
 			   historyPanel->Controls->Clear();
 			   historyPanel->Width = 658;
 			   historyPanel->BackColor = Color::Transparent;
@@ -189,7 +180,7 @@ namespace ContactsApp {
 				   TimeLabel->Font = gcnew System::Drawing::Font(L"Arial", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					   static_cast<System::Byte>(0));
 				   TimeLabel->Location = System::Drawing::Point(99, 52);
-				   TimeLabel->Text = gcnew String((to_string(history[i].get_time().get_hours()) + ":" + to_string(history[i].get_time().get_minutes()) + ":" + to_string(history[i].get_time().get_seconds())).c_str()); // Assuming get_mobile_number() returns a string
+				   TimeLabel->Text = gcnew String((to_string(history[i].get_time().get_hours()) + ":" + to_string(history[i].get_time().get_minutes()) + ":" + to_string(history[i].get_time().get_seconds())).c_str()); 
 				   contactPanel->Controls->Add(TimeLabel); // Add Label to the panel
 
 				   // Create and configure label for date
@@ -198,7 +189,7 @@ namespace ContactsApp {
 				   DateLabel->Font = gcnew System::Drawing::Font(L"Arial", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					   static_cast<System::Byte>(0));
 				   DateLabel->Location = System::Drawing::Point(99, 70);
-				   DateLabel->Text = gcnew String((to_string(history[i].get_date().get_year()) + "/" + to_string(history[i].get_date().get_month()) + "/" + to_string(history[i].get_date().get_day())).c_str()); // Assuming get_mobile_number() returns a string
+				   DateLabel->Text = gcnew String((to_string(history[i].get_date().get_year()) + "/" + to_string(history[i].get_date().get_month()) + "/" + to_string(history[i].get_date().get_day())).c_str()); 
 				   contactPanel->Controls->Add(DateLabel); // Add Label to the panel
 				   historyPanel->Controls->Add(contactPanel);
 			   }
@@ -266,7 +257,7 @@ private:
 			TimeLabel->Font = gcnew System::Drawing::Font(L"Arial", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0));
 			TimeLabel->Location = System::Drawing::Point(99, 52);
-			TimeLabel->Text = gcnew String((to_string(searched[i].get_time().get_hours()) + ":" + to_string(searched[i].get_time().get_minutes()) + ":" + to_string(searched[i].get_time().get_seconds())).c_str()); // Assuming get_mobile_number() returns a string
+			TimeLabel->Text = gcnew String((to_string(searched[i].get_time().get_hours()) + ":" + to_string(searched[i].get_time().get_minutes()) + ":" + to_string(searched[i].get_time().get_seconds())).c_str());
 			contactPanel->Controls->Add(TimeLabel); // Add Label to the panel
 
 			// Create and configure label for date
@@ -275,7 +266,7 @@ private:
 			DateLabel->Font = gcnew System::Drawing::Font(L"Arial", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0));
 			DateLabel->Location = System::Drawing::Point(99, 70);
-			DateLabel->Text = gcnew String((to_string(searched[i].get_date().get_year()) + "/" + to_string(searched[i].get_date().get_month()) + "/" + to_string(searched[i].get_date().get_day())).c_str()); // Assuming get_mobile_number() returns a string
+			DateLabel->Text = gcnew String((to_string(searched[i].get_date().get_year()) + "/" + to_string(searched[i].get_date().get_month()) + "/" + to_string(searched[i].get_date().get_day())).c_str()); 
 			contactPanel->Controls->Add(DateLabel); // Add Label to the panel
 			frequentSearchPanel->Controls->Add(contactPanel);
 		}

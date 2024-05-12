@@ -1,8 +1,10 @@
 #include "SearchHistory.h"
 #include <sstream>
 
+// Constructor
 SearchHistory::SearchHistory() : frequentSearch(5), history(100), searchedContacts(100), historySize(0) { }
 
+// Copy constructor
 SearchHistory::SearchHistory(const SearchHistory& other)
 {
     frequentSearch = other.frequentSearch;
@@ -62,8 +64,10 @@ void SearchHistory::add_search_item(HistoryObject& historyObject) {
         // Add the contact to the searchedContacts list
         searchedContacts.append(historyObject.get_contact());
         historySize++;
+        // Check if the object should be added to top5
         if (check_frequent_search(historyObject.get_contact()))
         {
+            // add the history object to top5
             update_frequent_search(historyObject);
         }
         save_history("history.txt");
@@ -112,6 +116,7 @@ void SearchHistory::save_history(string historyFile) {
     }
 }
 
+// Save frequntly searched to text file
 void SearchHistory::save_top5(string top5File) {
     ofstream file;
     file.open(top5File);

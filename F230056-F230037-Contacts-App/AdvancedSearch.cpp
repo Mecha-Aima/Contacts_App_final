@@ -80,6 +80,7 @@ void AdvanceSearch::update_history(HistoryObject& h, SearchHistory& sh)
 
 HistoryObject AdvanceSearch::search_history(Contact& c)
 {
+    // Get local time and date, create a HistoryObject and return it
     time_t now = time(0);
     tm* local = localtime(&now);
     int yr = 1900+local->tm_year;

@@ -39,7 +39,7 @@ namespace ContactsApp {
 		}
 	private: System::Windows::Forms::Button^ Contacts;
 	protected:
-	private: System::Windows::Forms::Button^ groups;
+
 	private: System::Windows::Forms::Button^ hist;
 
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
@@ -62,7 +62,6 @@ namespace ContactsApp {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Home::typeid));
 			this->Contacts = (gcnew System::Windows::Forms::Button());
-			this->groups = (gcnew System::Windows::Forms::Button());
 			this->hist = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->heading = (gcnew System::Windows::Forms::Label());
@@ -78,7 +77,7 @@ namespace ContactsApp {
 			this->Contacts->Font = (gcnew System::Drawing::Font(L"Montserrat Medium", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Contacts->ForeColor = System::Drawing::Color::White;
-			this->Contacts->Location = System::Drawing::Point(91, 368);
+			this->Contacts->Location = System::Drawing::Point(191, 368);
 			this->Contacts->Name = L"Contacts";
 			this->Contacts->Padding = System::Windows::Forms::Padding(8, 0, 8, 0);
 			this->Contacts->Size = System::Drawing::Size(182, 33);
@@ -86,24 +85,6 @@ namespace ContactsApp {
 			this->Contacts->Text = L"View Contacts";
 			this->Contacts->UseVisualStyleBackColor = false;
 			this->Contacts->Click += gcnew System::EventHandler(this, &Home::Contacts_Click);
-			// 
-			// groups
-			// 
-			this->groups->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->groups->BackColor = System::Drawing::Color::DarkCyan;
-			this->groups->FlatAppearance->BorderColor = System::Drawing::Color::DarkCyan;
-			this->groups->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->groups->Font = (gcnew System::Drawing::Font(L"Montserrat Medium", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->groups->ForeColor = System::Drawing::Color::White;
-			this->groups->Location = System::Drawing::Point(320, 368);
-			this->groups->Name = L"groups";
-			this->groups->Padding = System::Windows::Forms::Padding(8, 0, 8, 0);
-			this->groups->Size = System::Drawing::Size(182, 33);
-			this->groups->TabIndex = 19;
-			this->groups->Text = L"View Groups";
-			this->groups->UseVisualStyleBackColor = false;
-			this->groups->Click += gcnew System::EventHandler(this, &Home::groups_Click);
 			// 
 			// hist
 			// 
@@ -114,7 +95,7 @@ namespace ContactsApp {
 			this->hist->Font = (gcnew System::Drawing::Font(L"Montserrat Medium", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->hist->ForeColor = System::Drawing::Color::White;
-			this->hist->Location = System::Drawing::Point(551, 368);
+			this->hist->Location = System::Drawing::Point(431, 368);
 			this->hist->Name = L"hist";
 			this->hist->Padding = System::Windows::Forms::Padding(8, 0, 8, 0);
 			this->hist->Size = System::Drawing::Size(182, 33);
@@ -153,7 +134,6 @@ namespace ContactsApp {
 			this->Controls->Add(this->heading);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->hist);
-			this->Controls->Add(this->groups);
 			this->Controls->Add(this->Contacts);
 			this->Name = L"Home";
 			this->Text = L"Home";

@@ -132,10 +132,10 @@
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Group.cpp" />
-    <ClCompile Include="Groups_form.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="HistoryObject.cpp" />
     <ClCompile Include="Home.cpp" />
+    <ClCompile Include="InputDialog.cpp" />
     <ClCompile Include="SearchHistory.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
@@ -157,14 +157,14 @@
     <ClInclude Include="Date.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Group.h" />
-    <ClInclude Include="Groups_form.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
     <ClInclude Include="History.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="HistoryObject.h" />
     <ClInclude Include="Home.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="InputDialog.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="List.h" />
@@ -186,14 +186,14 @@
     <EmbeddedResource Include="Create_contact.resx">
       <DependentUpon>Create_contact.h</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Groups_form.resx">
-      <DependentUpon>Groups_form.h</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="History.resx">
       <DependentUpon>History.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputDialog.resx">
+      <DependentUpon>InputDialog.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

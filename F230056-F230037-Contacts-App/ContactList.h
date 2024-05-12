@@ -6,6 +6,8 @@
 #include "AdvancedSearch.h"
 #include "SearchHistory.h"
 #include "Globals.h"
+#include "InputDialog.h"
+
 using namespace msclr::interop;
 
 namespace ContactsApp {
@@ -36,6 +38,7 @@ namespace ContactsApp {
 	private: System::Windows::Forms::Label^ sort_by_label;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Button^ merge_duplicates;
+	private: System::Windows::Forms::Button^ button1;
 
 
 	private: System::Windows::Forms::PictureBox^ back;
@@ -43,6 +46,7 @@ namespace ContactsApp {
 	public:
 		ContactList(void)
 		{
+			// Instantiate members
 			book = new ContactsBook(50);
 			as = new AdvanceSearch();
 			mainContainer = gcnew Panel();
@@ -52,10 +56,6 @@ namespace ContactsApp {
 			InitializeComponent();
 		}
 
-	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
 		~ContactList()
 		{
 			if (components)
@@ -249,7 +249,7 @@ namespace ContactsApp {
 				phoneNumberLabel->Font = gcnew System::Drawing::Font(L"Montserrat", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0));
 				phoneNumberLabel->Location = System::Drawing::Point(99, 62);
-				phoneNumberLabel->Text = gcnew String((*book)[i].get_mobile_number().c_str()); // Assuming get_mobile_number() returns a string
+				phoneNumberLabel->Text = gcnew String((*book)[i].get_mobile_number().c_str()); 
 				contactPanel->Controls->Add(phoneNumberLabel); // Add Label to the panel
 
 				// Create and configure Label for contact_id (hidden)
@@ -345,6 +345,7 @@ namespace ContactsApp {
 			this->sort_by_label = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->merge_duplicates = (gcnew System::Windows::Forms::Button());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->search_bar->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->close))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->back))->BeginInit();
@@ -396,7 +397,7 @@ namespace ContactsApp {
 			this->add_button->Font = (gcnew System::Drawing::Font(L"Montserrat Medium", 8.249999F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->add_button->ForeColor = System::Drawing::Color::White;
-			this->add_button->Location = System::Drawing::Point(568, 19);
+			this->add_button->Location = System::Drawing::Point(453, 19);
 			this->add_button->Name = L"add_button";
 			this->add_button->Padding = System::Windows::Forms::Padding(8, 0, 8, 0);
 			this->add_button->Size = System::Drawing::Size(117, 33);
@@ -488,6 +489,24 @@ namespace ContactsApp {
 			this->merge_duplicates->Visible = false;
 			this->merge_duplicates->Click += gcnew System::EventHandler(this, &ContactList::merge_duplicates_Click);
 			// 
+			// button1
+			// 
+			this->button1->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->button1->BackColor = System::Drawing::Color::Transparent;
+			this->button1->FlatAppearance->BorderColor = System::Drawing::Color::DarkCyan;
+			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button1->Font = (gcnew System::Drawing::Font(L"Montserrat Medium", 8.249999F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button1->ForeColor = System::Drawing::Color::DarkCyan;
+			this->button1->Location = System::Drawing::Point(576, 19);
+			this->button1->Name = L"button1";
+			this->button1->Padding = System::Windows::Forms::Padding(8, 0, 8, 0);
+			this->button1->Size = System::Drawing::Size(117, 33);
+			this->button1->TabIndex = 14;
+			this->button1->Text = L"Create group";
+			this->button1->UseVisualStyleBackColor = false;
+			this->button1->Click += gcnew System::EventHandler(this, &ContactList::button1_Click);
+			// 
 			// ContactList
 			// 
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
@@ -495,6 +514,7 @@ namespace ContactsApp {
 			this->BackColor = System::Drawing::Color::AliceBlue;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
 			this->ClientSize = System::Drawing::Size(773, 469);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->merge_duplicates);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->sort_by_label);
@@ -531,6 +551,7 @@ namespace ContactsApp {
 private: System::Void add_button_Click(System::Object^ sender, System::EventArgs^ e) {
 	cc->ShowDialog();
 	cc->Focus();
+	// If contact added, reprint the contacts
 	if (cc->isAdded())
 	{
 		DisplayContacts(this->book);
@@ -545,6 +566,7 @@ private: System::Void search_bar_MouseClick(System::Object^ sender, System::Wind
 }
 private: System::Void search_field_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
 	if (e->KeyChar == (char)Keys::Enter) {
+		// Enter search mode, if ENTER key pressed
 		search_field->Enabled = false;
 		this->BackColor = System::Drawing::Color::LightSteelBlue;
 		String^ query = search_field->Text;
@@ -579,33 +601,38 @@ private: System::Void back_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	
 private: System::Void sort_by_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	// Sort function comboBox
 	ComboBox^ comboBox = (ComboBox^)sender;
 	int selectedIndex = comboBox->SelectedIndex;
 	ContactsBook* sorted_copy = new ContactsBook(*book);
 	switch (selectedIndex)
 	{
 	case 0:
+		// First Name: Ascending
 		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::fn_less_than);
 		DisplayContacts(sorted_copy);
 		break;
 	
 	case 1:
+		// First Name: Descending
 		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::fn_greater_than);
 		DisplayContacts(sorted_copy);
 		break;
 	case 2:
+		// Last Name: Ascending
 		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::ln_less_than);
 		DisplayContacts(sorted_copy);
 		break;
 	case 3:
+		// Last Name: Descending
 		sort_list(sorted_copy->get_contacts(), sorted_copy->total_contacts(), new Contact(), Contact::ln_greater_than);
 		DisplayContacts(sorted_copy);
 		break;
 	case 4:
+		// Default
 		DisplayContacts(this->book);
 		break;
 	}
-	
 
 }
 
@@ -627,6 +654,58 @@ private: System::Void merge_duplicates_Click(System::Object^ sender, System::Eve
 	this->book->save_to_file("write_contacts.txt");
 	DisplayContacts(this->book);
 }
+
+	 // Create groups button
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	Form^ selectContactsForm = gcnew Form();
+	selectContactsForm->Text = "Select Contacts";
+	selectContactsForm->Size = System::Drawing::Size(300, 400);
+	FlowLayoutPanel^ panel = gcnew FlowLayoutPanel();
+	panel->Dock = DockStyle::Fill;
+	selectContactsForm->Controls->Add(panel);
+	for (int i = 0; i < book->total_contacts(); ++i) {
+		CheckBox^ checkBox = gcnew CheckBox();
+		checkBox->Text = gcnew String((book->get_contact(i).get_first_name() + " " + book->get_contact(i).get_last_name()).c_str());
+		checkBox->Tag = i;
+		panel->Controls->Add(checkBox);
+	}
+	Button^ confirmButton = gcnew Button();
+	confirmButton->Text = "Confirm";
+	confirmButton->Dock = DockStyle::Bottom;
+	confirmButton->Click += gcnew EventHandler(this, &ContactList::confirmButton_Click);
+	selectContactsForm->Controls->Add(confirmButton);
+	selectContactsForm->ShowDialog();
+}
+
+private:
+	System::Void confirmButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		InputDialog^ inputDialog = gcnew InputDialog("Enter Group Name", "Group Name:");
+		if (inputDialog->ShowDialog() == Windows::Forms::DialogResult::OK) {
+			String^ groupName = inputDialog->InputValue;
+			if (!String::IsNullOrEmpty(groupName)) {
+				Windows::Forms::DialogResult result = MessageBox::Show("Do you want to create a group with the selected contacts?", "Confirm Group Creation",
+					MessageBoxButtons::YesNo, MessageBoxIcon::Question);
+				if (result == Windows::Forms::DialogResult::Yes) {
+					MessageBox::Show("Group created successfully!");
+					return;
+					this->Close();
+					inputDialog->Close();
+				}
+			}
+			else {
+				MessageBox::Show("Group name cannot be empty. Group creation canceled.");
+				return;
+				this->Close();
+				inputDialog->Close();
+			}
+		}
+		else {
+			MessageBox::Show("Group creation canceled.");
+			return;
+			this->Close();
+			inputDialog->Close();
+		}
+	}
 };
 }
 

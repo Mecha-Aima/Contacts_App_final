@@ -25,9 +25,7 @@ namespace ContactsApp {
 		Contact_details(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			
 		}
 		Contact_details(Contact& contact, ContactsBook &b)
 		{
@@ -43,9 +41,7 @@ namespace ContactsApp {
 			deleted = false;
 			
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			
 		}
 
 	protected:
@@ -90,13 +86,6 @@ namespace ContactsApp {
 	private: System::Windows::Forms::Label^ country;
 
 
-
-
-	protected:
-
-	protected:
-
-	protected:
 
 	private:
 		/// <summary>
@@ -442,12 +431,14 @@ namespace ContactsApp {
 	{
 		if (MessageBox::Show("Delete contact?", "Confirmation", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes)
 		{
+			// Delete the selected contact from the Contacts Book
 			bptr->delete_contact(bptr->get_contact(id).get_first_name(), bptr->get_contact(id).get_last_name());
 			deleted = true;
 			Contact_details::Close();
 		}
 	}
 	public:
+		// Mechanism to let the other contact know if a contact has been deleted
 		void set_deleted(bool val)
 		{
 			deleted = val;
