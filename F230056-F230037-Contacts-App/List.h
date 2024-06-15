@@ -6,7 +6,7 @@ template <typename T>
 class List {
 public:
     // Parameterized constructor
-    List(int max = 200);
+    List(int max = 70);
     // Destructor
     ~List();
     // Copy constructor
@@ -23,7 +23,6 @@ public:
     bool is_empty() const;
     bool is_full() const;
     void clear();
-    List<T>& display() const;
     T* get_list() const;
 
 private:
@@ -150,11 +149,6 @@ T& List<T>::operator[](int index) {
 
 template <typename T>
 void List<T>::clear() { length = 0; }
-
-template <typename T>
-List<T>& List<T>::display() const {
-    return *this;
-}
 
 template <typename T>
 T* List<T>::get_list() const {

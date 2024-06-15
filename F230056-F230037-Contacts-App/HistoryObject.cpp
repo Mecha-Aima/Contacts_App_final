@@ -10,10 +10,6 @@ HistoryObject::HistoryObject(int hour, int minute, int second, int day, int mont
 // Constructor with Time and Date objects
 HistoryObject::HistoryObject(const Time& time, const Date& date, Contact c) : time(time), date(date), contact(c) {}
 
-HistoryObject& HistoryObject::display() {
-    return *this;
-}
-
 Time& HistoryObject::get_time() {
     return time;
 }

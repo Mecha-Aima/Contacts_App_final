@@ -18,7 +18,6 @@ public:
     ~HistoryObject() {}
     // Copy constructor
     HistoryObject(const HistoryObject& other);
-    HistoryObject& display();
 
     // Methods
     bool compare(const HistoryObject& a, const HistoryObject& b, bool (*fptr)(const HistoryObject& h1, const HistoryObject& h2)) const override;

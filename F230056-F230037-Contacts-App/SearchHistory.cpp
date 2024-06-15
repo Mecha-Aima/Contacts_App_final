@@ -2,7 +2,7 @@
 #include <sstream>
 
 // Constructor
-SearchHistory::SearchHistory() : frequentSearch(5), history(100), searchedContacts(100), historySize(0) { }
+SearchHistory::SearchHistory() : frequentSearch(5), history(70), searchedContacts(70), historySize(0) { }
 
 // Copy constructor
 SearchHistory::SearchHistory(const SearchHistory& other)
@@ -59,7 +59,7 @@ void SearchHistory::update_frequent_search(HistoryObject& h)
 
 void SearchHistory::add_search_item(HistoryObject& historyObject) {
     // Assuming history is an array of HistoryObject instances
-    if (historySize < 100) {
+    if (historySize < 70) {
         history.append(historyObject);
         // Add the contact to the searchedContacts list
         searchedContacts.append(historyObject.get_contact());

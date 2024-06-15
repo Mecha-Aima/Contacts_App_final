@@ -25,6 +25,7 @@ public:
 	Contact();
 	Contact(std::string first_name, std::string last_name, std::string mobile_number, std::string email_address, Address* address);
 	Contact(const Contact& other);
+	~Contact();
 	// Setters
 	void set_first_name(std::string first_name);
 	void set_last_name(std::string last_name);

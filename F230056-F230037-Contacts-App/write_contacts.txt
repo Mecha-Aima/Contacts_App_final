@@ -1,4 +1,4 @@
-16
+19
 Qainat,Aslam,03331234567,q.aslam@gmail.com
 4,4,Osaka,Japan
 
@@ -46,4 +46,13 @@ Richard,Fellan,02315640321,richard.f@gmail.com
 
 Adam,Smith,02351240121,adam.s@stanford.edu.us
 12,78,Los Angeles,USA
+
+William,Kent,02341578031,w.kent@gmail.com
+45,56,Manchester,England
+
+Edward,Antonio,02354861797,e.antonio@yahoo.com
+156,78,Florence,Italy
+
+Salaar,Usman,02315402389,s.usman@nu.edu.pk
+789,45,Islamabad,Pakistan
 

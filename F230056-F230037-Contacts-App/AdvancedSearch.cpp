@@ -3,7 +3,7 @@
 using namespace std;
 // Constructor
 AdvanceSearch::AdvanceSearch() :
-    maxSize(200), searchResults(maxSize), item_count(0) {}
+    maxSize(100), searchResults(maxSize), item_count(0) {}
 
 // Destructor
 AdvanceSearch::~AdvanceSearch() { }

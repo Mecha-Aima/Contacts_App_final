@@ -28,11 +28,11 @@ ContactsBook::ContactsBook(const ContactsBook& other)
 	// Copy the contacts from the other object to this object
 	for (size_t i = 0; i < contacts_count; i++)
 	{
-		contacts_list[i] = other.contacts_list[i];
+		contacts_list[i] = other.contacts_list[i].copy_contact();
 	}
 }
 
-void ContactsBook::add_contact(Contact& contact)
+void ContactsBook::add_contact(Contact contact)
 {
 	// Check if the list is full, if it is full call the resize function
 	if (full())
@@ -316,7 +316,7 @@ ContactsBook& ContactsBook::operator=(const ContactsBook& other)
 	// Copy the contacts from the other object to this object
 	for (size_t i = 0; i < contacts_count; i++)
 	{
-		contacts_list[i] = other.contacts_list[i];
+		contacts_list[i] = other.contacts_list[i].copy_contact();
 	}
 	return *this;
 }

@@ -10,12 +10,12 @@ private:
 	int contacts_count;     // total contacts currently stored, next contact will be 
 	// stored at this count plus 1 index
 public:
-	void add_contact(Contact& contact);
+	void add_contact(Contact contact);
 	void delete_contact(std::string first_name, std::string last_name);
 	int total_contacts() const;
-	Contact* search_contact(std::string first_name, std::string last_name);
+	/*Contact* search_contact(std::string first_name, std::string last_name);
 	Contact* search_contact(std::string phone);
-	Contact* search_contact(const Address& address);
+	Contact* search_contact(const Address& address);*/
 	ContactsBook(int size_of_list);
 	~ContactsBook();
 	ContactsBook(const ContactsBook& other);

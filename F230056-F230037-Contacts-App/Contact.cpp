@@ -31,7 +31,7 @@ Contact::Contact(const Contact& other)
 		this->mobile_number = other.mobile_number;
 		this->email_address = other.email_address;
 		if (other.address != nullptr) {
-			this->address = new Address(other.address->get_house(), other.address->get_street(), other.address->get_city(), other.address->get_country());
+			this->address = new Address(other.address->copy_address());
 		}
 		else {
 			this->address = nullptr;
@@ -39,10 +39,10 @@ Contact::Contact(const Contact& other)
 		this->search_count = other.search_count;
 }
 
-//Contact::~Contact()
-//{
-//	delete address;
-//}
+Contact::~Contact()
+{
+	delete address;
+}
 
 // Setters
 void Contact::set_first_name(std::string first_name)
@@ -117,17 +117,17 @@ void Contact::print_contact()
 // Return a deep copy of *this
 Contact& Contact::copy_contact()
 {
-	Contact copiedContact;
-	copiedContact.first_name = this->first_name;
-	copiedContact.last_name = this->last_name;
-	copiedContact.mobile_number = this->mobile_number;
-	copiedContact.email_address = this->email_address;
-	copiedContact.contact_id = this->contact_id;
-	copiedContact.address = new Address(this->address->get_house(),
+	Contact *copiedContact = new Contact();
+	copiedContact->first_name = this->first_name;
+	copiedContact->last_name = this->last_name;
+	copiedContact->mobile_number = this->mobile_number;
+	copiedContact->email_address = this->email_address;
+	copiedContact->contact_id = this->contact_id;
+	copiedContact->address = new Address(this->address->get_house(),
 		this->address->get_street(),
 		this->address->get_city(),
 		this->address->get_country());
-	return copiedContact;
+	return *copiedContact;
 }
 
 // Overload cin for Contact
@@ -182,7 +182,7 @@ Contact& Contact::operator=(const Contact& other)
 			this->address = nullptr;
 		}	
 		if (other.address != nullptr) {
-			this->address = new Address(*other.address);
+			this->address = new Address(other.address->copy_address());
 		}
 		this->search_count = other.search_count;
 	}

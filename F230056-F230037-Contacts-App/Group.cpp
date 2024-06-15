@@ -1,7 +1,7 @@
 #include "Group.h"
 
 // Constructor
-Group::Group() : name(""), max_contacts(100), no_of_contacts(0) {}
+Group::Group() : name(""), max_contacts(50), no_of_contacts(0) {}
 Group::Group(std::string n, int max) : name(n), max_contacts(max), no_of_contacts(0) {}
 // Copy constructor
 Group::Group(const Group& other) : name(other.name), max_contacts(other.max_contacts), no_of_contacts(other.no_of_contacts) {
@@ -73,11 +73,6 @@ bool Group::operator==(const Group& other) const
     return false;
 }
 
-// return the group
-Group& Group::display()
-{
-    return *this;
-}
 
 // Less than
 bool Group::less_than(const Group& a, const Group& b)
