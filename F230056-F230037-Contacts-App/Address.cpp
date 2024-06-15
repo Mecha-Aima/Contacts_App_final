@@ -65,7 +65,7 @@ void Address::print_address()
 	std::cout << house << ", " << street << ", " << city << ", " << country << std::endl;
 }
 
-// Return a copy of current object
+// Return a copy of current address
 Address Address::copy_address()
 {
 	return Address(house, street, city, country);
